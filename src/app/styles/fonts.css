@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "AdvercaseFont";
+  src: url("/fonts/advercaseFont.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBMPlexMono";
+  src: url("/fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBMPlexMono-ExtraLight";
+  src: url("/fonts/IBMPlexMono-ExtraLight.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBMPlexMono-Thin";
+  src: url("/fonts/IBMPlexMono-Thin.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "IBMPlexMono-Light";
+  src: url("/fonts/IBMPlexMono-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme inline {
+  --font-mono-light: "IBMPlexMono-Light";
+  --font-mono: "IBMPlexMono";
+  --font-advercase: "AdvercaseFont";
+}
+
+body {
+  font-family: "IBMPlexMono";
+}

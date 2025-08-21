@@ -6,7 +6,15 @@ export const albumType = defineType({
   type: "document",
   fields: [
     { name: "title", type: "string" },
+    { name: "slug", type: "slug", options: { source: "title" } },
     { name: "description", type: "text" },
+    {
+      name: "albumImage",
+      title: "Huvudbild för albumet",
+      type: "image",
+      options: { hotspot: true },
+      fields: [{ name: "alt", type: "string" }],
+    },
     {
       name: "photos",
       type: "array",

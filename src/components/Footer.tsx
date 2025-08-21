@@ -1,17 +1,30 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+  const pathName = usePathname();
+
   return (
     <footer
-      className="w-full flex justify-between px-[24px] pb-[12px]"
+      className={`z-99 relative flex flex-col-reverse gap-[24px] w-full md:flex-row justify-between side-spacing pb-[14px] text-sm ${pathName === "/" && "homepage"}`}
       aria-label="Site footer"
     >
       <div className="flex flex-col">
         <p>© {new Date().getFullYear()} Johan Nilheimer</p>
         <p>
-          Developed by: <a href="https://www.muridae.dev/">Noah Lundberg</a>
+          Developed by:{" "}
+          <a
+            href="https://www.muridae.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Noah Lundberg
+          </a>
         </p>
       </div>
 
-      <address className="flex flex-col text-right not-italic">
+      <address className="flex flex-col md:text-right not-italic">
         <a
           href="https://www.instagram.com/johan.nilheimer"
           target="_blank"

@@ -1,7 +1,9 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 :root {
   --background: #ffffff;
+  --text-color: #000000;
 }
 
 @theme inline {
@@ -12,7 +14,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: rgba(20, 20, 20, 1);
+    --text-color: #ffffff;
   }
 }
 
@@ -20,8 +23,15 @@ a {
   @apply underline;
 }
 
+footer.homepage {
+  @apply top-[100vh] -translate-y-full;
+}
+
+.side-spacing {
+  @apply px-[12px] md:px-[24px];
+}
+
 body {
   background: var(--background);
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-color);
 }

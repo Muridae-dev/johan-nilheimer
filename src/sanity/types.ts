@@ -13,6 +13,29 @@
  */
 
 // Source: schema.json
+export type HomePage = {
+  _id: string;
+  _type: "homePage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  homePagePhoto?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    caption?: string;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type Album = {
   _id: string;
   _type: "album";
@@ -21,6 +44,19 @@ export type Album = {
   _rev: string;
   title?: string;
   description?: string;
+  albumImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   photos?: Array<{
     asset?: {
       _ref: string;
@@ -156,5 +192,52 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Album | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = HomePage | Album | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/sanity/lib/queries.ts
+// Variable: HOME_PAGE_QUERY
+// Query: *[_type == "homePage"][0]{  title,  homePagePhoto{    asset->{      url    },    caption,    alt  }}
+export type HOME_PAGE_QUERYResult = {
+  title: string | null;
+  homePagePhoto: {
+    asset: {
+      url: string | null;
+    } | null;
+    caption: string | null;
+    alt: string | null;
+  } | null;
+} | null;
+// Variable: ALBUMS_QUERY_ALL
+// Query: *[_type == "album"]{  title,  albumImage{    asset->{      url    },    alt  }}
+export type ALBUMS_QUERY_ALLResult = Array<{
+  title: string | null;
+  albumImage: {
+    asset: {
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
+}>;
+// Variable: ALBUM_QUERY_SLUG
+// Query: *[_type == "album" && _id == $albumId][0]{  title,  description,  photos[]{    asset->{      url    },    caption,    alt  }}
+export type ALBUM_QUERY_SLUGResult = {
+  title: string | null;
+  description: string | null;
+  photos: Array<{
+    asset: {
+      url: string | null;
+    } | null;
+    caption: string | null;
+    alt: string | null;
+  }> | null;
+} | null;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "*[_type == \"homePage\"][0]{\n  title,\n  homePagePhoto{\n    asset->{\n      url\n    },\n    caption,\n    alt\n  }\n}": HOME_PAGE_QUERYResult;
+    "*[_type == \"album\"]{\n  title,\n  albumImage{\n    asset->{\n      url\n    },\n    alt\n  }\n}": ALBUMS_QUERY_ALLResult;
+    "*[_type == \"album\" && _id == $albumId][0]{\n  title,\n  description,\n  photos[]{\n    asset->{\n      url\n    },\n    caption,\n    alt\n  }\n}": ALBUM_QUERY_SLUGResult;
+  }
+}
