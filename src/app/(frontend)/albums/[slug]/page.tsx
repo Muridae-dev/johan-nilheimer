@@ -1,3 +1,4 @@
+import PhotoGrid from "@/components/PhotoGrid";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { ALBUM_QUERY_SLUG } from "@/sanity/lib/queries";
@@ -20,21 +21,8 @@ export default async function AlbumPage({
   }
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-4 side-spacing gap-[24px] py-[84px]">
-      {albumData.photos.map((album) => (
-        <div
-          className="relative max-h-[600px] md:max-h-[300px] flex justify-center items-center"
-          key={album._key}
-        >
-          <Image
-            src={urlFor(album).width(800).auto("format").quality(100).url()}
-            alt={album.alt || "Home page photo"}
-            width={600}
-            height={600}
-            className="max-h-full max-w-full object-contain"
-          />
-        </div>
-      ))}
-    </section>
+    <div className="min-h-[calc(100dvh-64px-64px)] md:min-h-[calc(100dvh-64px)] w-full relative overflow-hidden">
+      {albumData.photos && <PhotoGrid photos={albumData.photos} />}
+    </div>
   );
 }
