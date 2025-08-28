@@ -16,31 +16,31 @@ export default async function Albums() {
           <AnimatedLink
             key={album.title}
             className="!no-underline hover:!underline"
-            href={`/albums/${album.slug.current}`}
+            href={`/albums/${album.slug!.current}`}
           >
             <figure className="relative mx-auto md:mx-0 h-[calc(100dvh-54px*2-84px)] w-full aspect-square md:aspect-video">
               <Image
-                src={urlFor(album.albumImage)
+                src={urlFor(album.albumImage!)
                   .width(1000)
                   .height(1500)
                   .fit("crop")
                   .auto("format")
                   .quality(100)
                   .url()}
-                alt={album.albumImage.alt || "Home page photo"}
+                alt={album.albumImage!.alt || "Home page photo"}
                 fill
                 priority
                 sizes="100vw"
                 className="md:hidden object-cover"
               />
               <Image
-                src={urlFor(album.albumImage)
+                src={urlFor(album.albumImage!)
                   .width(3000)
                   .fit("crop")
                   .auto("format")
                   .quality(100)
                   .url()}
-                alt={album.albumImage.alt || "Home page photo"}
+                alt={album.albumImage!.alt || "Home page photo"}
                 fill
                 priority
                 sizes="100vw"

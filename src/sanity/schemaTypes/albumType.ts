@@ -5,8 +5,13 @@ export const albumType = defineType({
   title: "Album",
   type: "document",
   fields: [
-    { name: "title", type: "string" },
-    { name: "slug", type: "slug", options: { source: "title" } },
+    { name: "title", type: "string", validation: (Rule) => Rule.required() },
+    {
+      name: "slug",
+      type: "slug",
+      options: { source: "title" },
+      validation: (Rule) => Rule.required(),
+    },
     { name: "description", type: "text" },
     {
       name: "albumImage",
@@ -14,6 +19,7 @@ export const albumType = defineType({
       type: "image",
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string" }],
+      validation: (Rule) => Rule.required(),
     },
     {
       name: "photos",
@@ -28,6 +34,7 @@ export const albumType = defineType({
           ],
         },
       ],
+      validation: (Rule) => Rule.required(),
     },
   ],
 });
