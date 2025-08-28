@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Flip } from "gsap/Flip";
+import { AlbumPhoto } from "@/sanity/schemaTypes/albumType";
 
 gsap.registerPlugin(Flip);
 
@@ -17,12 +18,12 @@ const CONFIG = {
   flip: { duration: 0.4, ease: "power2.inOut" },
 };
 
-export default function PhotoGrid({ photos }: { photos: any[] }) {
+export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
   const gridRef = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
 
   const [isPreviewMode, setIsPreviewMode] = useState(false);
-  const [currentImage, setCurrentImage] = useState<any | null>();
+  const [currentImage, setCurrentImage] = useState<AlbumPhoto | null>();
   const [showCurrentImage, setShowCurrentImage] = useState<boolean>(false);
 
   const scrollTarget = useRef(0);
@@ -77,7 +78,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
     setPositions(index);
 
     requestAnimationFrame(tick);
-  }, [setPositions, photos, setCurrentImage]);
+  }, [setPositions]);
 
   useEffect(() => {
     if (!isPreviewMode) return;
@@ -146,7 +147,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
         setPositions(scrollTarget.current / scrollInterval)
       );
     };
-  }, [isPreviewMode, currentImage]);
+  }, [isPreviewMode, currentImage, photos, setPositions]);
 
   useEffect(() => {
     if (isPreviewMode) {
@@ -157,7 +158,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
       document.querySelector("header")?.classList.toggle("md:flex");
       tick();
     }
-  }, [isPreviewMode]);
+  }, [isPreviewMode, tick]);
 
   const gridFlip = useCallback(() => {
     const grid = gridRef.current;
@@ -181,9 +182,15 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
       absolute: true,
       onComplete: () => setShowCurrentImage(true),
     });
-  }, [isPreviewMode]);
+  }, [isPreviewMode, photos.length]);
 
-  const handleClick = ({ image, index }: { image: any; index: number }) => {
+  const handleClick = ({
+    image,
+    index,
+  }: {
+    image: AlbumPhoto;
+    index: number;
+  }) => {
     const { scrollInterval } = CONFIG;
 
     !isPreviewMode && gridFlip();

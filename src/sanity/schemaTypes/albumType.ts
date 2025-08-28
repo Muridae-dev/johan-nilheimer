@@ -1,4 +1,5 @@
 import { defineType } from "sanity";
+import { ALBUM_QUERY_SLUGResult } from "../types";
 
 export const albumType = defineType({
   name: "album",
@@ -38,3 +39,7 @@ export const albumType = defineType({
     },
   ],
 });
+
+export type AlbumPhoto = NonNullable<
+  NonNullable<ALBUM_QUERY_SLUGResult>["photos"]
+>[number];

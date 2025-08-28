@@ -1,8 +1,6 @@
 import PhotoGrid from "@/components/PhotoGrid";
-import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { ALBUM_QUERY_SLUG } from "@/sanity/lib/queries";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 export default async function AlbumPage({
