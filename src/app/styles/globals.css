@@ -24,7 +24,7 @@ a {
 }
 
 footer.homepage {
-  @apply top-[100vh] -translate-y-full;
+  @apply top-[100dvh] -translate-y-full;
 }
 
 .side-spacing {

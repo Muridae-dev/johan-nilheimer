@@ -133,20 +133,18 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
       }, snapDelay);
     };
 
+    const onResize = () => setPositions(scrollTarget.current / scrollInterval);
+
     window.addEventListener("wheel", onScroll, { passive: false });
     window.addEventListener("touchmove", onScroll, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
-    window.addEventListener("resize", () =>
-      setPositions(scrollTarget.current / scrollInterval)
-    );
+    window.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("wheel", onScroll);
       window.removeEventListener("touchmove", onScroll);
       window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("resize", () =>
-        setPositions(scrollTarget.current / scrollInterval)
-      );
+      window.removeEventListener("resize", onResize);
     };
   }, [isPreviewMode, currentImage, photos, setPositions]);
 
@@ -230,7 +228,7 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
         </>
       )}
 
-      <div className="min-h-[calc(100vh-84px)] relative h-full top-[84px] overflow-hidden">
+      <div className="min-h-[calc(100dvh-84px)] relative h-full top-[84px] overflow-hidden">
         <div
           ref={boxRef}
           className="z-9 absolute translate-y-1/2 md:translate-y-0 md:translate-x-1/2 hidden border border-white w-[50px] h-[50px] md:w-[100px] md:h-[50px]"

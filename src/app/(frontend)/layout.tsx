@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased relative w-full min-h-screen`}>
+      <body className={`antialiased relative w-full min-h-[100dvh]`}>
         <TransitionElement />
         <Header />
         {children}

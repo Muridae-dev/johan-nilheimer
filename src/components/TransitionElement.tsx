@@ -31,7 +31,7 @@ export default function TransitionElement() {
   return (
     <div
       id="transition-element"
-      className="fixed top-0 left-0 h-screen w-screen bg-white z-999"
+      className="fixed top-0 left-0 h-[100dvh] w-screen bg-white z-999"
     ></div>
   );
 }
