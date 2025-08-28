@@ -10,7 +10,7 @@ export default async function Home() {
   const photo = homepageData?.homePagePhoto;
 
   return (
-    <figure className="absolute w-full h-[100dvh] md:w-[calc(100%-150px)] md:h-[calc(100vh-150px)] md:left-1/2 md:top-1/2 md:-translate-1/2">
+    <figure className="absolute w-full h-[100dvh] md:w-[calc(100%-150px)] md:h-[calc(100dvh-150px)] md:left-1/2 md:top-1/2 md:-translate-1/2">
       {photo && (
         <>
           <Image
