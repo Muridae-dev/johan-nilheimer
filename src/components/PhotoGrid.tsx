@@ -237,7 +237,6 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
                 alt={image.alt || "Home page photo"}
                 width={600}
                 height={600}
-                // IMPORTANT: let the image scale with the grid cell
                 className="w-full h-full object-contain"
                 sizes="(max-width: 768px) 100vw, 25vw"
               />
