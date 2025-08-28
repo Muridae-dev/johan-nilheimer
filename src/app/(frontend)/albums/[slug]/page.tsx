@@ -21,7 +21,7 @@ export default async function AlbumPage({
   }
 
   return (
-    <div className="min-h-[calc(100dvh-64px-64px)] md:min-h-[calc(100dvh-64px)] w-full relative overflow-hidden">
+    <div className="min-h-[calc(100vh)] md:min-h-[calc(100vh-64px)] w-full relative overflow-hidden">
       {albumData.photos && <PhotoGrid photos={albumData.photos} />}
     </div>
   );

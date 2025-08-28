@@ -10,7 +10,7 @@ export default async function Albums() {
   });
 
   return (
-    <div className="min-h-[calc(100dvh-54px)]">
+    <div className="min-h-[calc(100vh-54px)]">
       <section className="w-full h-full gap-[24px] grid grid-cols-1 md:grid-cols-2 px-[24px] pt-[84px] pb-[64px] md:pb-0">
         {albumData.map((album) => (
           <AnimatedLink
@@ -18,7 +18,7 @@ export default async function Albums() {
             className="!no-underline hover:!underline"
             href={`/albums/${album.slug!.current}`}
           >
-            <figure className="relative mx-auto md:mx-0 h-[calc(100dvh-54px*2-84px)] w-full aspect-square md:aspect-video">
+            <figure className="relative mx-auto md:mx-0 h-[calc(100vh-54px*2-84px)] w-full aspect-square md:aspect-video">
               <Image
                 src={urlFor(album.albumImage!)
                   .width(1000)

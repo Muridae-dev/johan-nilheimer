@@ -50,6 +50,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
       box.style.setProperty("top", `${gridCenter}px`);
       box.style.setProperty("bottom", "unset");
       box.style.setProperty("right", `${grid.offsetWidth / 2}px`);
+      box.style.setProperty("left", "unset");
     } else {
       const gridCenter =
         Math.round(window.innerWidth / 2 / gridItemSize) * gridItemSize;
@@ -59,9 +60,10 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
         `translateX(${gridCenter - index * gridItemSize}px)`
       );
 
-      box.style.setProperty("right", `${gridCenter - gridItemSize}px`);
+      box.style.setProperty("left", `${gridCenter}px`);
+      box.style.setProperty("right", "unset");
       box.style.setProperty("top", "unset");
-      box.style.setProperty("bottom", `${grid.offsetHeight / 2}px`);
+      box.style.setProperty("bottom", `${grid.offsetHeight / 2 + 24}px`);
     }
   }, []);
 
@@ -98,7 +100,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
         const touch = e.touches[0];
         if (!lastTouchX.current) lastTouchX.current = touch.clientX;
 
-        deltaY = (lastTouchX.current - touch.clientX) * 2;
+        deltaY = (lastTouchX.current - touch.clientX) * 10;
         lastTouchX.current = touch.clientX;
       }
 
@@ -108,7 +110,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
         scrollTarget.current += deltaY * scrollMultiplier;
       }
 
-      if (index < 0) scrollTarget.current = 0;
+      if (scrollTarget.current < 0) scrollTarget.current = 0;
       if (index > photos.length - 1)
         scrollTarget.current = (photos.length - 1) * scrollInterval;
 
@@ -121,9 +123,14 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
 
     const onTouchEnd = () => {
       lastTouchX.current = 0;
+
       snapTimeout.current = setTimeout(() => {
-        scrollTarget.current =
-          Math.round(scrollTarget.current / scrollInterval) * scrollInterval;
+        console.log(scrollTarget.current);
+        const snapped = Math.round(scrollTarget.current / scrollInterval);
+        scrollTarget.current = snapped * scrollInterval;
+        console.log(snapped);
+
+        if (photos[snapped]) setCurrentImage(photos[snapped]);
       }, snapDelay);
     };
 
@@ -147,6 +154,10 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
   useEffect(() => {
     if (isPreviewMode) {
       boxRef.current?.classList.toggle("hidden");
+      document.querySelector("footer")?.classList.toggle("hidden");
+      document.querySelector("header")?.classList.toggle("hidden");
+      document.querySelector("footer")?.classList.toggle("md:flex");
+      document.querySelector("header")?.classList.toggle("md:flex");
       tick();
     }
   }, [isPreviewMode]);
@@ -164,6 +175,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
     });
 
     grid.classList.toggle("single-mode");
+    grid.classList.toggle("side-spacing");
 
     grid.style.setProperty("--rows", String(photos.length));
 
@@ -186,7 +198,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
   return (
     <>
       {isPreviewMode && currentImage && showCurrentImage && (
-        <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full h-[70vh] md:translate-0 md:top-[64px] md:left-0 md:w-[90%] md:h-[calc(100vh-64px-64px-24px)]">
+        <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full h-[100vh] md:translate-0 md:top-[64px] md:left-0 md:w-[90%] md:h-[calc(100vh-64px-64px-24px)]">
           <Image
             src={urlFor(currentImage)
               .width(3000)
@@ -201,7 +213,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
         </div>
       )}
 
-      <div className="min-h-[70vh] relative h-full top-[84px] overflow-hidden">
+      <div className="min-h-[calc(100vh-84px)] relative h-full top-[84px] overflow-hidden">
         <div
           ref={boxRef}
           className="z-9 absolute translate-y-1/2 md:translate-y-0 md:translate-x-1/2 hidden border border-white w-[50px] h-[50px] md:w-[100px] md:h-[50px]"
