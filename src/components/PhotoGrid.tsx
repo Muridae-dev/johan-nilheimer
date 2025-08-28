@@ -116,7 +116,7 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
 
       const snapped = Math.round(index);
 
-      if (photos[snapped] && photos[snapped] !== currentImage) {
+      if (photos[snapped]) {
         setCurrentImage(photos[snapped]);
       }
     };
@@ -125,11 +125,8 @@ export default function PhotoGrid({ photos }: { photos: any[] }) {
       lastTouchX.current = 0;
 
       snapTimeout.current = setTimeout(() => {
-        console.log(scrollTarget.current);
         const snapped = Math.round(scrollTarget.current / scrollInterval);
         scrollTarget.current = snapped * scrollInterval;
-        console.log(snapped);
-
         if (photos[snapped]) setCurrentImage(photos[snapped]);
       }, snapDelay);
     };
