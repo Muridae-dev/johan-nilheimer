@@ -30,6 +30,7 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
   const scrollCurrent = useRef(0);
   const lastTouchX = useRef(0);
   const snapTimeout = useRef<NodeJS.Timeout>(null);
+  const rafId = useRef<number | null>(null);
 
   const setPositions = useCallback((index: number) => {
     const grid = gridRef.current;
@@ -43,7 +44,7 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
         Math.round(window.innerHeight / 2 / gridItemSize) * gridItemSize -
         gridItemSize;
 
-      gridRef.current?.style.setProperty(
+      grid.style.setProperty(
         "transform",
         `translateY(${gridCenter - index * gridItemSize}px)`
       );
@@ -56,7 +57,7 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
       const gridCenter =
         Math.round(window.innerWidth / 2 / gridItemSize) * gridItemSize;
 
-      gridRef.current?.style.setProperty(
+      grid.style.setProperty(
         "transform",
         `translateX(${gridCenter - index * gridItemSize}px)`
       );
@@ -77,8 +78,8 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
     const index = scrollCurrent.current / scrollInterval;
     setPositions(index);
 
-    requestAnimationFrame(tick);
-  }, [setPositions]);
+    if (isPreviewMode) rafId.current = requestAnimationFrame(tick);
+  }, [setPositions, isPreviewMode]);
 
   useEffect(() => {
     if (!isPreviewMode) return;
@@ -151,12 +152,10 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
 
   useEffect(() => {
     if (isPreviewMode) {
-      boxRef.current?.classList.toggle("hidden");
-      document.querySelector("footer")?.classList.toggle("hidden");
-      document.querySelector("header")?.classList.toggle("hidden");
-      document.querySelector("footer")?.classList.toggle("md:flex");
-      document.querySelector("header")?.classList.toggle("md:flex");
       tick();
+    } else if (rafId.current && !isPreviewMode) {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = null;
     }
   }, [isPreviewMode, tick]);
 
@@ -174,13 +173,17 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
 
     grid.classList.toggle("single-mode");
     grid.classList.toggle("side-spacing");
+    boxRef.current?.classList.toggle("hidden");
+    document.querySelector("footer")?.classList.toggle("hidden");
+    document.querySelector("header")?.classList.toggle("hidden");
 
+    grid.style.setProperty("transform", "unset");
     grid.style.setProperty("--rows", String(photos.length));
 
     Flip.from(state, {
       ...CONFIG.flip,
       absolute: true,
-      onComplete: () => setShowCurrentImage(true),
+      onComplete: () => setShowCurrentImage((prev) => !prev),
     });
   }, [isPreviewMode, photos.length]);
 
@@ -202,19 +205,29 @@ export default function PhotoGrid({ photos }: { photos: AlbumPhoto[] }) {
   return (
     <>
       {isPreviewMode && currentImage && showCurrentImage && (
-        <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full h-[100vh] md:translate-0 md:top-[64px] md:left-0 md:w-[90%] md:h-[calc(100vh-64px-64px-24px)]">
-          <Image
-            src={urlFor(currentImage)
-              .width(3000)
-              .auto("format")
-              .quality(80)
-              .url()}
-            alt={currentImage.alt || "Home page photo"}
-            className="object-contain"
-            fill
-            sizes="90vw"
-          />
-        </div>
+        <>
+          <button
+            onClick={() => {
+              gridFlip();
+            }}
+            className="z-99 absolute underline min-w-[32px] aspect-square top-[8px] right-[12px] cursor-pointer md:-translate-x-[100%]"
+          >
+            Close
+          </button>
+          <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full h-full md:translate-0 md:top-[64px] md:left-0 md:w-[90%] md:h-[calc(100vh-64px-64px-24px)]">
+            <Image
+              src={urlFor(currentImage)
+                .width(3000)
+                .auto("format")
+                .quality(80)
+                .url()}
+              alt={currentImage.alt || "Home page photo"}
+              className="object-contain"
+              fill
+              sizes="90vw"
+            />
+          </div>{" "}
+        </>
       )}
 
       <div className="min-h-[calc(100vh-84px)] relative h-full top-[84px] overflow-hidden">
