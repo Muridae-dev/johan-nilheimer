@@ -25,7 +25,7 @@ export default async function Albums() {
                   .height(1500)
                   .fit("crop")
                   .auto("format")
-                  .quality(100)
+                  .quality(95)
                   .url()}
                 alt={album.albumImage!.alt || "Home page photo"}
                 fill
@@ -38,7 +38,7 @@ export default async function Albums() {
                   .width(3000)
                   .fit("crop")
                   .auto("format")
-                  .quality(100)
+                  .quality(95)
                   .url()}
                 alt={album.albumImage!.alt || "Home page photo"}
                 fill

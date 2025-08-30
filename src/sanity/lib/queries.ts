@@ -12,6 +12,30 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "homePage"][0]{
   }
 }`);
 
+export const ABOUT_PAGE_QUERY = defineQuery(`*[_type == "aboutPage"][0]{
+  description,
+  mainImage{
+    ...,
+    asset->{
+      url
+    },
+    caption,
+    alt
+  }
+}`);
+
+export const CONTACT_PAGE_QUERY = defineQuery(`*[_type == "contactPage"][0]{
+  description,
+  mainImage{
+    ...,
+    asset->{
+      url
+    },
+    caption,
+    alt
+  }
+}`);
+
 export const ALBUMS_QUERY_ALL = defineQuery(`*[_type == "album"]{
   title,
   slug,

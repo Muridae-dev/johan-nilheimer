@@ -23,6 +23,10 @@ a {
   @apply underline;
 }
 
+footer.footer-alt {
+  @apply md:top-[100dvh] md:-translate-y-full;
+}
+
 footer.homepage {
   @apply top-[100dvh] -translate-y-full;
 }
@@ -32,8 +36,23 @@ footer.homepage {
 }
 
 body {
+  position: relative;
   background: var(--background);
   color: var(--text-color);
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/grain.svg") repeat;
+  background-size: 200px;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.2;
 }
 
 @layer utilities {

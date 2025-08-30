@@ -19,7 +19,7 @@ export default async function Home() {
               .height(1500)
               .fit("crop")
               .auto("format")
-              .quality(100)
+              .quality(95)
               .url()}
             alt={photo.alt || "Home page photo"}
             fill
@@ -32,7 +32,7 @@ export default async function Home() {
               .width(3000)
               .fit("crop")
               .auto("format")
-              .quality(100)
+              .quality(95)
               .url()}
             alt={photo.alt || "Home page photo"}
             fill
