@@ -32,7 +32,7 @@ export default async function Kontakt() {
             alt={photo.alt || "About page photo"}
             fill
             priority
-            sizes="50vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
         )}
