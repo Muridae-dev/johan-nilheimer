@@ -4,10 +4,11 @@ import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const pathName = usePathname();
+  const pathsWithAltFooter = ["/om", "/kontakt"];
 
   return (
     <footer
-      className={`z-99 relative flex flex-col-reverse gap-[24px] w-full md:flex-row justify-between side-spacing pb-[14px] text-sm ${pathName === "/" && "homepage"}`}
+      className={`z-99 relative flex flex-col-reverse gap-[24px] w-full md:flex-row justify-between side-spacing pb-[14px] text-sm ${pathsWithAltFooter.includes(pathName) && "footer-alt"} ${pathName === "/" && "homepage"}`}
       aria-label="Site footer"
     >
       <div className="flex flex-col">

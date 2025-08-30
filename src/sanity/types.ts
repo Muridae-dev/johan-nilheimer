@@ -13,6 +13,52 @@
  */
 
 // Source: schema.json
+export type ContactPage = {
+  _id: string;
+  _type: "contactPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  description?: string;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    caption?: string;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type AboutPage = {
+  _id: string;
+  _type: "aboutPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  description?: string;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    caption?: string;
+    alt?: string;
+    _type: "image";
+  };
+};
+
 export type HomePage = {
   _id: string;
   _type: "homePage";
@@ -193,7 +239,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = HomePage | Album | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = ContactPage | AboutPage | HomePage | Album | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: HOME_PAGE_QUERY
@@ -201,6 +247,38 @@ export declare const internalGroqTypeReferenceTo: unique symbol;
 export type HOME_PAGE_QUERYResult = {
   title: string | null;
   homePagePhoto: {
+    asset: {
+      url: string | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    caption: string | null;
+    alt: string | null;
+    _type: "image";
+  } | null;
+} | null;
+// Variable: ABOUT_PAGE_QUERY
+// Query: *[_type == "aboutPage"][0]{  description,  mainImage{    ...,    asset->{      url    },    caption,    alt  }}
+export type ABOUT_PAGE_QUERYResult = {
+  description: string | null;
+  mainImage: {
+    asset: {
+      url: string | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    caption: string | null;
+    alt: string | null;
+    _type: "image";
+  } | null;
+} | null;
+// Variable: CONTACT_PAGE_QUERY
+// Query: *[_type == "contactPage"][0]{  description,  mainImage{    ...,    asset->{      url    },    caption,    alt  }}
+export type CONTACT_PAGE_QUERYResult = {
+  description: string | null;
+  mainImage: {
     asset: {
       url: string | null;
     } | null;
@@ -252,6 +330,8 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"homePage\"][0]{\n  title,\n  homePagePhoto{\n    ...,\n    asset->{\n      url\n    },\n    caption,\n    alt\n  }\n}": HOME_PAGE_QUERYResult;
+    "*[_type == \"aboutPage\"][0]{\n  description,\n  mainImage{\n    ...,\n    asset->{\n      url\n    },\n    caption,\n    alt\n  }\n}": ABOUT_PAGE_QUERYResult;
+    "*[_type == \"contactPage\"][0]{\n  description,\n  mainImage{\n    ...,\n    asset->{\n      url\n    },\n    caption,\n    alt\n  }\n}": CONTACT_PAGE_QUERYResult;
     "*[_type == \"album\"]{\n  title,\n  slug,\n  albumImage{\n    ...,\n    asset->{\n      url\n    },\n    alt\n  }\n}": ALBUMS_QUERY_ALLResult;
     "*[_type == \"album\" && slug.current == $slug][0]{\n  title,\n  description,\n  photos[]{\n    ...,\n    asset->{\n      url\n    },\n    caption,\n    alt\n  }\n}": ALBUM_QUERY_SLUGResult;
   }

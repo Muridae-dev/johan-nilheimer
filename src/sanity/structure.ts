@@ -1,13 +1,31 @@
 import type { StructureResolver } from "sanity/structure";
 
+const singlePageDocumnents = [
+  {
+    title: "Home Page",
+    id: "homePage",
+  },
+  {
+    title: "Contact Page",
+    id: "contactPage",
+  },
+  {
+    title: "About Page",
+    id: "aboutPage",
+  },
+];
+
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([
-      S.listItem()
-        .title("Home Page")
-        .child(S.document().schemaType("homePage").documentId("homePage")),
+      ...singlePageDocumnents.map((item) =>
+        S.listItem()
+          .title(item.title)
+          .child(S.document().schemaType(item.id).documentId(item.id))
+      ),
       ...S.documentTypeListItems().filter(
-        (listItem) => listItem.getId() !== "homePage"
+        (listItem) =>
+          !singlePageDocumnents.some((doc) => doc.id === listItem.getId())
       ),
     ]);
